@@ -6,7 +6,7 @@
 #    By: incho <incho@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/01 08:18:34 by incho             #+#    #+#              #
-#    Updated: 2022/12/16 15:31:32 by incho            ###   ########.fr        #
+#    Updated: 2022/12/16 15:36:52 by incho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,5 +108,11 @@ re				:	fclean all
 # Custom Rules
 # ----------------------------------
 
+log				:
+			$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) logs -f
 
-.PHONY			:	all clean fclean re
+ps				:
+			$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) ps
+
+
+.PHONY			:	all clean fclean re log ps
