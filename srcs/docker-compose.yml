@@ -21,6 +21,21 @@ services:
     volumes:
       - volume-mariadb:/var/lib/mysql
 
+  # Nginx container
+  nginx:
+    build: ./requirments/nginx/
+    container_name: nginx
+    depends_on:
+      - wordpress
+    image: nginx
+    networks:
+      - network-nginx
+    ports:
+      - '443:443'
+    restart: always
+    volumes:
+      - volume-wordpress:/var/www/wordpress
+
   # WordPress container
   wordpress:
     build: ./requirements/wordpress/
