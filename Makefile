@@ -6,7 +6,7 @@
 #    By: incho <incho@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/01 08:18:34 by incho             #+#    #+#              #
-#    Updated: 2022/12/16 15:36:52 by incho            ###   ########.fr        #
+#    Updated: 2022/12/20 18:40:45 by incho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ TOUCH	=	touch
 # ----------------------------------
 
 DOCKER		=	docker
-DOCKERCMPS	=	docker compose -f
+DOCKERCMPS	=	docker compose -p $(NAME) -f
 UP			=	up --force-recreate --build -d
 DOWN		=	down -v --rmi all --remove-orhpans
 
@@ -87,6 +87,11 @@ all				:	$(NAME)
 
 $(NAME)			:
 			@$(SUDO) $(MKDIR) $(DATA_DIR)/mariadb
+ifeq ("$(wildcard .setup)". "")
+	@$(SUDO) $(CHMOD) 777 /etc/hosts
+	@$(SUDO) $(ECHO) "127.0.0.1 incho.42.fr" >> /etc/hosts
+	@$(TOUCH) .setup
+endif
 			@$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) $(UP)
 			@$(ECHO) "Composed up $(BLUE)$(NAME)$(NOCOLOR) $(GREEN)Successfully$(NOCOLOR) using $(LIGHTGRAY)$(CMPS_YML)$(NOCOLOR)"
 
@@ -108,6 +113,9 @@ re				:	fclean all
 # Custom Rules
 # ----------------------------------
 
+restart			:
+			$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) restart
+
 log				:
 			$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) logs -f
 
@@ -115,4 +123,4 @@ ps				:
 			$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) ps
 
 
-.PHONY			:	all clean fclean re log ps
+.PHONY			:	all clean fclean re restart log ps
