@@ -1,4 +1,5 @@
 # 42_Inception
+CHANGE .env VOLUME_PATH to home before run !
 
 ## Notion
 https://www.notion.so/INCEPTION-b109460adab64844be841e54640119ea
