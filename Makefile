@@ -6,7 +6,7 @@
 #    By: incho <incho@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/01 08:18:34 by incho             #+#    #+#              #
-#    Updated: 2022/12/20 18:40:45 by incho            ###   ########.fr        #
+#    Updated: 2022/12/20 19:15:36 by incho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME	=	inception
 # ----------------------------------
 
 CP		=	cp
-RM		=	rm -f
+RM		=	rm -rf
 MKDIR	=	mkdir -p
 MV		=	mv
 ECHO	=	echo
@@ -35,7 +35,7 @@ TOUCH	=	touch
 DOCKER		=	docker
 DOCKERCMPS	=	docker compose -p $(NAME) -f
 UP			=	up --force-recreate --build -d
-DOWN		=	down -v --rmi all --remove-orhpans
+DOWN		=	down -v --rmi all --remove-orphans
 
 
 # ----------------------------------
@@ -87,7 +87,7 @@ all				:	$(NAME)
 
 $(NAME)			:
 			@$(SUDO) $(MKDIR) $(DATA_DIR)/mariadb
-ifeq ("$(wildcard .setup)". "")
+ifeq ("$(wildcard .setup)", "")
 	@$(SUDO) $(CHMOD) 777 /etc/hosts
 	@$(SUDO) $(ECHO) "127.0.0.1 incho.42.fr" >> /etc/hosts
 	@$(TOUCH) .setup
@@ -98,14 +98,14 @@ endif
 
 clean			:
 			@$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) $(DOWN) 
-			@$(ECHO) "Cleaned down$(RED)$(NAME)$(NOCOLOR) using $(LIGHTGRAY)$(CMPS_YML)$(NOCOLOR)"
+			@$(ECHO) "Cleaned down $(RED)$(NAME)$(NOCOLOR) using $(LIGHTGRAY)$(CMPS_YML)$(NOCOLOR)"
 
 fclean			:	clean
 			@$(SUDO) $(RM) $(DATA_DIR)
 			@$(SUDO) $(DOCKER) system prune --volumes --all --force
 			@$(SUDO) $(DOCKER) network prune --force
 			@$(SUDO) $(DOCKER) volume prune --force
-			@$(ECHO) "Removed $(RED)$(NAME)'s Docker network, volume and all files and directories.$(NOCOLOR)"
+			@$(ECHO) "Removed $(RED)$(NAME)$(NOCOLOR)'s Docker network, volume and all files and directories."
 
 re				:	fclean all
 
@@ -114,13 +114,13 @@ re				:	fclean all
 # ----------------------------------
 
 restart			:
-			$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) restart
+			@$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) restart
 
 log				:
-			$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) logs -f
+			@$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) logs -f
 
 ps				:
-			$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) ps
+			@$(SUDO) $(DOCKERCMPS) $(SRC_DIR)/$(CMPS_YML) ps
 
 
 .PHONY			:	all clean fclean re restart log ps

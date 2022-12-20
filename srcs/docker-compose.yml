@@ -5,7 +5,7 @@ services:
   mariadb:
     build: ./requirements/mariadb/
     container_name: mariadb
-    environmnet:
+    environment:
       - HOST_NAME=${HOST_NAME}
       - HOST_IPV4=${HOST_IPV4}
       - HOST_IPV6=${HOST_IPV6}
