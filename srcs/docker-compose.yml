@@ -23,7 +23,7 @@ services:
 
   # Nginx container
   nginx:
-    build: ./requirments/nginx/
+    build: ./requirements/nginx/
     container_name: nginx
     depends_on:
       - wordpress
