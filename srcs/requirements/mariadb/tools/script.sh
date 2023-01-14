@@ -10,7 +10,7 @@ if [ $? -ne 0 ]; then
         printf "MariaDB Daemon Unreachable\n"
         exit 1
     fi
-    eval "echo \"#(cat /tmp/query.sql)\"" | mariadb
+    eval "echo \"$(cat /tmp/query.sql)\"" | mariadb
     pkill mariadb
     touch .setup
 fi
